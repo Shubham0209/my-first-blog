@@ -1,8 +1,4 @@
-<html>
-    <head>
-        <title>Django Girls blog</title>
-    </head>
-    <body>
+
     <!--    
         <div>
             <h1><a href="/">Django Girls Blog</a></h1>
@@ -20,18 +16,24 @@
             <p>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut f.</p>
         </div>
     -->
-    <div>
-            <h1><a href="/">Django Girls Blog</a></h1>
-        </div>
-        
-        {% for post in posts %}
-            <div>
-                <p>published: {{ post.published_date }}</p> <!--To print a variable in Django templates, we use double curly brackets with the variable's name inside-->
-                <h1><a href="">{{ post.title }}</a></h1>
-                <p>{{ post.text|linebreaksbr }}</p> <!--piping the posts' text through a filter to convert line-breaks into paragraphs.-->
-            </div>
-        {% endfor %}
+    {% extends 'blog/base.html' %}
+
+    {% block content %}
+                        {% for post in posts %}
+                            <div class="post">
+                                <div class="date">
+                                    <p>published: {{ post.published_date }}</p>
+                                </div>
+                                <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
+                                <!--django template that will create a URL for us!-->
+                                <!--The 'post_detail' part means that Django will be expecting a URL in blog/urls.py with name=post_detail-->
+                                <!--we didn't specify a primary key in our Post model, Django creates one for us (by default, a number that increases by 
+                                one for each record, i.e. 1, 2, 3) and adds it as a field named pk to each of our posts.-->
+                                <p>{{ post.text|linebreaksbr }}</p>
+                            </div>
+                        {% endfor %}
+        {% endblock %}
+                
 
 
-    </body>
-</html>
+   
